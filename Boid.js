@@ -8,12 +8,12 @@ class Boid {
         this.size = random(3,20);
         this.fillColor = [random(255), random(355), random(255), 120];
         this.strokeColor = [120, 110,190];
-        this.maXForce = 0.05;
-        this.maxSpeed = 10.0;
+        this.maXForce = 0.5;
+        this.maxSpeed = 3.0;
     }   
 
     align(boids){
-        let perceptionRadius = 100;
+        let perceptionRadius = 50;
         let desired = createVector();
         let total = 0;
         const neighbors = boids.filter(boid => boid.id !== this.id)
@@ -21,6 +21,8 @@ class Boid {
             const neighborPos = boid.position;
             const influencer = this.checkNeighbor(neighborPos.x, neighborPos.y, perceptionRadius);
             if(influencer){
+                // const influence = this.calculateInfluence(neighborPos.x, neighborPos.y);
+                // desired.add(boid.velocity * influence);
                 desired.add(boid.velocity);
                 total++;
             }
@@ -28,6 +30,7 @@ class Boid {
         
         if(total > 0){
             desired.div(total);
+            desired.setMag(this.maxSpeed);
             desired.sub(this.velocity);    
             desired.limit(this.maxForce);
         }
@@ -39,6 +42,14 @@ class Boid {
     calculateFlocking(boids){
         const steering = this.align(boids);
         this.acceleration.add(steering);
+    }
+
+    calculateInfluence(nX, nY){
+        const mX = this.position.x;
+        const mY = this.position.y;
+        const d = dist(mX, mY, nX, nY);
+        const influenceMult = 0.001;
+        return d * influenceMult;
     }
 
     checkEdges(){
@@ -99,12 +110,12 @@ class Boid {
 // this.acceleration.mult(0);
 // STEER = DESIRED MINUS VELOCITY
 // Boid.prototype.seek = function(target) {
-//   let desired = p5.Vector.sub(target,this.position);  // A vector pointing from the location to the target
-//   // Normalize desired and scale to maximum speed
-//   desired.normalize();
-//   desired.mult(this.maxspeed);
-//   // Steering = Desired minus Velocity
-//   let steer = p5.Vector.sub(desired,this.velocity);
-//   steer.limit(this.maxforce);  // Limit to maximum steering force
-//   return steer;
-// }
+//     let desired = p5.Vector.sub(target,this.position);  // A vector pointing from the location to the target
+//     // Normalize desired and scale to maximum speed
+//     desired.normalize();
+//     desired.mult(this.maxspeed);
+//     // Steering = Desired minus Velocity
+//     let steer = p5.Vector.sub(desired,this.velocity);
+//     steer.limit(this.maxforce);  // Limit to maximum steering force
+//     return steer;
+//   }
