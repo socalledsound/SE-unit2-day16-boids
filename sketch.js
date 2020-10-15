@@ -1,10 +1,12 @@
-let numBoids = 30;
+const CANV_SIZE = 600;
+
+let numBoids = 3;
 let started  = false;
 let flock = [];
 let boidCount = 0;
 
 function setup(){
-    createCanvas(800, 800);
+    createCanvas(CANV_SIZE, CANV_SIZE);
 
     flock.push(new Boid(boidCount));
     boidCount++
@@ -22,7 +24,7 @@ function draw(){
 
 function drawIntro(){
     fill(255);
-    text('drag the mouse to generate new boids', 100, 100);
+    text('click the mouse to generate new boids', 100, 100);
 }
 
 function drawBoids(){
@@ -45,7 +47,7 @@ function mousePressed(){
         }
     } else {
         flock = [];
-        numBoids = random(3,300);
+        numBoids = random(3, 60);
         for(let i = 0; i< numBoids; i++){
             flock.push(new Boid(i));
         }

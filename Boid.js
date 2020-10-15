@@ -72,6 +72,13 @@ class Boid {
         ellipse(this.position.x, this.position.y, this.size);
     }
 
+
+    steer(){
+
+    }
+
+
+
     update(){
         this.velocity.add(this.acceleration);
         this.velocity.limit(this.maxSpeed);
@@ -90,3 +97,14 @@ class Boid {
 // this.position.add(this.velocity);
 // // Reset accelertion to 0 each cycle
 // this.acceleration.mult(0);
+// STEER = DESIRED MINUS VELOCITY
+// Boid.prototype.seek = function(target) {
+//   let desired = p5.Vector.sub(target,this.position);  // A vector pointing from the location to the target
+//   // Normalize desired and scale to maximum speed
+//   desired.normalize();
+//   desired.mult(this.maxspeed);
+//   // Steering = Desired minus Velocity
+//   let steer = p5.Vector.sub(desired,this.velocity);
+//   steer.limit(this.maxforce);  // Limit to maximum steering force
+//   return steer;
+// }
