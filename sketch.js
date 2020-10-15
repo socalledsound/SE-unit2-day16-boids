@@ -19,3 +19,10 @@ function drawIntro(){
 
 
 
+if(x > 0){
+    '1'
+} else {
+    '2'
+}
+
+x > 0 ? '1' : '2'
