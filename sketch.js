@@ -47,7 +47,7 @@ function mousePressed(){
         }
     } else {
         flock = [];
-        numBoids = random(3, 30);
+        numBoids = random(90, 120);
         for(let i = 0; i< numBoids; i++){
             flock.push(new Boid(i));
         }
