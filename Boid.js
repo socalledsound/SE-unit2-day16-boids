@@ -15,6 +15,8 @@ class Boid {
         this.perceptionRadius = 100;
         this.blindspot = 0;
         this.rate = 0;
+        this.running = false;
+        this.resetRunning = this.resetRunning.bind(this);
     }   
 
     align(boids){
@@ -45,22 +47,28 @@ class Boid {
     }    
 
     calculateFlocking(boids){
-        let seperationValue = this.size * 6 * random(0.001, 0.1);
-        let coin = Math.random > 0.5;
-        if(coin){
-            seperationValue = 450;
-        }        //calculate vectors
-        const align = this.align(boids);
-        const cohesion = this.cohesion(boids);
-        const seperation = this.seperation(boids, seperationValue);
-        //add weightings
-        align.mult(1.0);
-        cohesion.mult(0.1);
-        seperation.mult(1.5);
-        //apply the new force
-        this.acceleration.add(cohesion);
-        this.acceleration.add(align);
-        this.acceleration.add(seperation);
+        console.log(this.running);
+        if(!this.running){
+            let seperationValue = this.size * 6 * random(0.001, 0.1);
+            let coin = Math.random() > 0.9995;
+            if(coin){
+                seperationValue = 450;
+                this.running = true;
+                setTimeout(this.resetRunning, 3000);
+            }        //calculate vectors
+            const align = this.align(boids);
+            const cohesion = this.cohesion(boids);
+            const seperation = this.seperation(boids, seperationValue);
+            //add weightings
+            align.mult(1.0);
+            cohesion.mult(0.1);
+            seperation.mult(1.5);
+            //apply the new force
+            this.acceleration.add(cohesion);
+            this.acceleration.add(align);
+            this.acceleration.add(seperation);
+        }
+
 
     }
 
@@ -118,7 +126,9 @@ class Boid {
         ellipse(this.position.x, this.position.y, this.size);
     }
 
-
+    resetRunning(){
+        this.running = false;
+    }
 
     seek(target){
         let desired = p5.Vector.sub(target,this.position);

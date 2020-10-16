@@ -1,6 +1,6 @@
 const CANV_SIZE = 600;
 
-let numBoids = 3;
+let numBoids = 99;
 let started  = false;
 let flock = [];
 let boidCount = 0;
