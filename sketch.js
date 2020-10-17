@@ -1,12 +1,12 @@
 let started  = false;
 
 const numBoids = 20;
-let boids = Array.from({ length: numBoids });
+let flock = Array.from({ length: numBoids });
 
 function setup(){
     createCanvas(800, 800);
-    boids.forEach((boid, i) => {
-        boids[i] = new Boid(i);
+    flock.forEach((boid, i) => {
+        flock[i] = new Boid(i);
     })
 }
 
@@ -25,7 +25,7 @@ function drawIntro(){
 }
 
 function drawBoids(){
-    boids.forEach(boid => {
+    flock.forEach(boid => {
         // update boid
         boid.display();
     })
@@ -36,8 +36,8 @@ function mousePressed(){
     if(!started){
         started = true;
     } else {
-        boids.forEach((boid, i) => {
-            boids[i] = new Boid(i);
+        flock.forEach((boid, i) => {
+            flock[i] = new Boid(i);
         })
     }
     
