@@ -1,10 +1,10 @@
 const CANV_SIZE = 600;
 
-let numBoids = 20;
+let numBoids = 60;
 let started  = false;
 let flock = [];
 let boidCount = 0;
-let numSounds = numBoids;
+let numSounds = 20;
 let sounds = Array.from({ length: numSounds });
 
 let player;
