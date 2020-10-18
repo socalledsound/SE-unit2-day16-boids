@@ -1,8 +1,8 @@
 class Boid {
     constructor(index){
         this.id = index;
-       // this.position = createVector(random(0, width), random(0, height));
-        this.position = createVector(width/2, height/2);
+        this.position = createVector(random(0, width), random(0, height));
+        // this.position = createVector(width/2, height/2);
         this.velocity = p5.Vector.random2D();
         // this.velocity.setMag(random(2,5));
         this.velocity = createVector(random(-3, 3), random(-3, 3));
@@ -45,24 +45,17 @@ class Boid {
     }    
 
     calculateFlocking(boids){
-        let seperationValue = this.size * 6 * random(0.001, 0.1);
-        let coin = Math.random > 0.5;
-        if(coin){
-            seperationValue = 450;
-        }        //calculate vectors
+        //calculate the forces
         const align = this.align(boids);
         const cohesion = this.cohesion(boids);
-        const seperation = this.seperation(boids, seperationValue);
-        //add weightings
-        align.mult(1.0);
-        cohesion.mult(0.1);
-        seperation.mult(1.5);
-        //apply the new force
+
+        //apply the new forces
         this.acceleration.add(cohesion);
         this.acceleration.add(align);
-        this.acceleration.add(seperation);
+        
 
     }
+  
 
     calculateInfluence(nX, nY){
         const mX = this.position.x;
@@ -103,11 +96,16 @@ class Boid {
 
           if (count > 0) {
             sum.div(count);
-            return this.seek(sum);
+            let desired = p5.Vector.sub(sum,this.position);
+            desired.normalize();
+            desired.mult(this.maxSpeed);
+            // Steering = Desired minus Velocity
+            let steer = p5.Vector.sub(desired,this.velocity);
+            steer.limit(this.maxForce);  // Limit to maximum steering force
+            return steer;
           } else {
             return createVector(0, 0);
           }
-
 
     }
 
