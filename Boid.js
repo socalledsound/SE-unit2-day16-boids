@@ -43,16 +43,23 @@ class Boid {
         }       
         return createVector(0, 0);
     }    
-
-    calculateFlocking(boids){
-        //calculate the forces
+  calculateFlocking(boids){
+        let seperationValue = this.size * 6 * random(0.001, 0.1);
+        let coin = Math.random > 0.5;
+        if(coin){
+            seperationValue = 450;
+        }        //calculate vectors
         const align = this.align(boids);
         const cohesion = this.cohesion(boids);
-
-        //apply the new forces
+        const seperation = this.seperation(boids, seperationValue);
+        //add weightings
+        align.mult(1.0);
+        cohesion.mult(0.1);
+        seperation.mult(1.5);
+        //apply the new force
         this.acceleration.add(cohesion);
         this.acceleration.add(align);
-        
+        this.acceleration.add(seperation);
 
     }
   
