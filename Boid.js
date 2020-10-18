@@ -10,34 +10,36 @@ class Boid {
         this.strokeColor = [120, 110,190];
         this.maXForce = 0.5;
         this.maxSpeed = 3.0;
+        this.perceptionRadius = 100;
+        this.blindspot = 0;
     }   
 
     align(boids){
-        let perceptionRadius = 50;
-        let desired = createVector();
+       
+        let sum = createVector(0,0);
         let total = 0;
-        const neighbors = boids.filter(boid => boid.id !== this.id)
-        neighbors.forEach( (boid, index) => {
-            const neighborPos = boid.position;
-            const influencer = this.checkNeighbor(neighborPos.x, neighborPos.y, perceptionRadius);
-            if(influencer){
+        
+        boids.forEach( (boid, index) => {
+            const d = p5.Vector.dist(this.position, boid.position);
+            if(d <  this.perceptionRadius && d > this.blindspot){
                 // const influence = this.calculateInfluence(neighborPos.x, neighborPos.y);
                 // desired.add(boid.velocity * influence);
-                desired.add(boid.velocity);
+                sum.add(boid.velocity);
                 total++;
             }
         })
         
         if(total > 0){
-            desired.div(total);
-            desired.setMag(this.maxSpeed);
-            desired.sub(this.velocity);    
-            desired.limit(this.maxForce);
-        }
-      
-
-        return desired
-    }    
+            sum.div(total);
+            sum.normalize();
+            sum.mult(this.maxSpeed);
+            let steer = p5.Vector.sub(sum, this.velocity);
+            steer.limit(this.maxforce);
+            return steer;
+            
+        }       
+        return createVector(0, 0);
+    }     
 
     calculateFlocking(boids){
         const steering = this.align(boids);
