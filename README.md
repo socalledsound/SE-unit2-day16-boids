@@ -1,6 +1,6 @@
 # boids with sound
 
-branched repository with tutorial here:
+branched repository to accompany guided tutorial which you can find here:
 
 https://socalledsidefx.com/units/unit2/day16/assignment
 
